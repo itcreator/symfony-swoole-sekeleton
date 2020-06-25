@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+    php:
+        build:
+            context: ../../
+            dockerfile: ops/docker/php/Dockerfile
+        command: "php bin/console swoole:bridge:server -vvv"
+        depends_on:
+            - pg
+        environment:
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#            - APP_HTTP_PORT=${APP_HTTP_PORT}
+            - APP_DATABASE_HOST=service.project.db
+            - SWOOLE_SERVER_HOST
+            - SWOOLE_SERVER_PORT
+        volumes:
+            - ../..:/code:Z
+            - ../../ops/docker/php/entrypoint.sh:/bin/entrypoint.sh
+            - ../../var/composer:/home/dev/.composer
+        tmpfs:
+            - /tmp:exec,size=1G
+        ports:
+            - "8080:8080"
+
+    pg:
+        image: 'postgres:12.3'
+        environment:
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        ports:
+            - 5432:5432
+        volumes:
+            - ../../var/db/data:/var/lib/postgresql/data
+        tmpfs:
+            - /tmp:exec,size=1G
+

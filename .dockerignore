@@ -1,0 +1,9 @@
+.git
+.idea
+ops
+var
+.env
+.gitignore
+.dockerignore
+!ops/**/entrypoint.sh
+!ops/**/*.ini

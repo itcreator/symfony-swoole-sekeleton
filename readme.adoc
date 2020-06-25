@@ -1,0 +1,35 @@
+
+= Symfony + Swoole Skeleton
+
+== Install
+
+[bash]
+----
+docker-compose run --rm --no-deps php composer install
+----
+
+
+
+== Run
+
+.Run container with PHP
+[source,bash]
+----
+docker-compose run --rm --no-deps --service-ports php bash
+----
+
+
+
+.Start Swoole Server
+[source,bash]
+----
+php bin/console swoole:bridge:server -vvv
+----
+
+
+.Start Built-in PHP Server
+[source,bash]
+----
+php -S 0.0.0.0:8080 -t public
+----
+
